@@ -30,6 +30,25 @@
       overflow-x: hidden;
     }
 
+    /* ─── LANG SWITCHER ─── */
+    .lang-bar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      height: 28px;
+      background: var(--slate);
+      display: flex; justify-content: flex-end; align-items: center;
+      padding: 0 5vw; gap: .75rem;
+    }
+    .lang-bar a {
+      font-family: 'DM Mono', monospace;
+      font-size: .65rem; letter-spacing: .1em; text-transform: uppercase;
+      color: rgba(255,255,255,.5); text-decoration: none; transition: color .2s;
+      padding: .2rem .5rem; border-radius: 3px;
+    }
+    .lang-bar a.active { color: var(--rust-light); }
+    .lang-bar a:hover { color: var(--white); }
+    .lang-sep { color: rgba(255,255,255,.2); font-size: .65rem; }
+
+
     /* ─── NAV ─── */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;

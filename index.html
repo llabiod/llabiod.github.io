@@ -7,268 +7,178 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&family=Inconsolata:wght@400;500&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg:      #f9f8f6;
-      --white:   #ffffff;
-      --ink:     #1a1a1a;
-      --mid:     #555550;
-      --light:   #999992;
-      --rule:    #e2e0db;
-      --accent:  #2b4057;
-      --accent2: #4a7fa5;
-      --navy:    #1c2e3d;
+    :root{--bg:#f9f8f6;--white:#ffffff;--ink:#1a1a1a;--mid:#555550;--light:#999992;--rule:#e2e0db;--accent:#2b4057;--accent2:#4a7fa5;--navy:#1c2e3d;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}html{scroll-behavior:smooth;}
+    body{font-family:'Jost',sans-serif;background:var(--bg);color:var(--ink);line-height:1.7;}
+    #langBar{position:fixed;top:0;left:0;right:0;z-index:200;background:var(--navy);display:flex;align-items:center;justify-content:flex-end;padding:0 6vw;height:30px;gap:1rem;}
+    .lang-label{font-family:'Inconsolata',monospace;font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.3);}
+    .lang-toggle{display:flex;gap:2px;}
+    .lang-btn{font-family:'Inconsolata',monospace;font-size:.7rem;font-weight:500;letter-spacing:.12em;padding:.15rem .7rem;border-radius:2px;border:none;cursor:pointer;transition:.2s;background:transparent;color:rgba(255,255,255,.35);}
+    .lang-btn.active{background:rgba(255,255,255,.12);color:#fff;}
+    .lang-btn:hover:not(.active){color:rgba(255,255,255,.7);}
+    nav{position:fixed;top:30px;left:0;right:0;z-index:100;background:rgba(249,248,246,.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--rule);display:flex;align-items:center;justify-content:space-between;padding:0 6vw;height:58px;}
+    .nav-logo{font-family:'Inconsolata',monospace;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);text-decoration:none;}
+    .nav-links{display:flex;gap:2rem;list-style:none;}
+    .nav-links a{font-size:.78rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--mid);text-decoration:none;transition:color .2s;}
+    .nav-links a:hover{color:var(--accent);}
+    .nav-toggle{display:none;background:none;border:none;cursor:pointer;flex-direction:column;gap:5px;}
+    .nav-toggle span{display:block;width:22px;height:1.5px;background:var(--ink);}
+    #hero{min-height:100vh;padding-top:88px;display:flex;flex-direction:column;}
+    .hero-top{flex:1;display:grid;grid-template-columns:5fr 7fr;}
+    .hero-left{padding:5rem 4vw 4rem 8vw;display:flex;flex-direction:column;justify-content:center;gap:2rem;}
+    .hero-eyebrow{font-family:'Inconsolata',monospace;font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--accent2);}
+    .hero-name-block{display:flex;align-items:center;gap:1.5rem;}
+    .hero-photo{width:140px;height:140px;border-radius:50%;overflow:hidden;flex-shrink:0;border:1.5px solid var(--rule);box-shadow:0 4px 18px rgba(0,0,0,.09);}
+    .hero-photo img{width:100%;height:100%;object-fit:cover;object-position:center top;}
+    h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2.6rem,4vw,4.2rem);font-weight:400;line-height:1.0;color:var(--navy);letter-spacing:-.01em;}
+    h1 em{font-style:italic;font-weight:500;color:var(--accent);}
+    .hero-meta{display:flex;flex-direction:column;gap:.35rem;}
+    .hi-title{font-size:.85rem;color:var(--mid);font-weight:300;line-height:1.5;}
+    .hi-inst{font-family:'Inconsolata',monospace;font-size:.67rem;color:var(--accent2);letter-spacing:.1em;text-transform:uppercase;}
+    .hero-profile-links{display:flex;align-items:center;gap:.5rem;margin-top:.35rem;flex-wrap:wrap;}
+    .hero-profile-links a{font-family:'Inconsolata',monospace;font-size:.68rem;color:var(--mid);text-decoration:none;transition:color .2s;}
+    .hero-profile-links a:hover{color:var(--accent);}
+    .hero-profile-links span{color:var(--rule);}
+    .btn-row{display:flex;gap:.75rem;}
+    .btn-primary{background:var(--navy);color:#fff;padding:.65rem 1.5rem;font-size:.75rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;border-radius:2px;transition:background .2s;}
+    .btn-primary:hover{background:var(--accent);}
+    .btn-ghost{border:1px solid var(--rule);color:var(--mid);padding:.65rem 1.5rem;font-size:.75rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;border-radius:2px;transition:.2s;}
+    .btn-ghost:hover{border-color:var(--navy);color:var(--navy);}
+    .hero-right{padding:5rem 8vw 4rem 5vw;display:flex;flex-direction:column;justify-content:center;background:var(--white);}
+    .hero-bio-label{font-family:'Inconsolata',monospace;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent2);margin-bottom:1.25rem;}
+    .hero-bio p{font-size:.93rem;color:var(--mid);font-weight:300;line-height:2.05;margin-bottom:1.25rem;}
+    .hero-bio p:last-child{margin-bottom:0;}
+    .hero-bio strong{color:var(--ink);font-weight:500;}
+    .hero-bottom{background:var(--navy);padding:1.75rem 8vw;display:flex;align-items:stretch;gap:0;}
+    .hb-block{display:flex;flex-direction:column;gap:.6rem;padding:0 2.5rem;flex:1;}
+    .hb-block:first-child{padding-left:0;}.hb-block:last-child{padding-right:0;}
+    .hb-vline{width:1px;background:rgba(255,255,255,.1);margin:.25rem 0;flex-shrink:0;}
+    .hb-label{font-family:'Inconsolata',monospace;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:.1rem;}
+    .hb-stats-row{display:flex;align-items:center;}
+    .hb-stat{display:flex;align-items:baseline;gap:.4rem;padding:0 1.1rem;}.hb-stat:first-child{padding-left:0;}
+    .hb-divline{width:1px;height:1.2rem;background:rgba(255,255,255,.12);flex-shrink:0;}
+    .hb-n{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:500;color:#fff;line-height:1;}
+    .hb-n sup{font-size:.75rem;color:var(--accent2);}
+    .hb-l{font-family:'Inconsolata',monospace;font-size:.62rem;text-transform:uppercase;letter-spacing:.07em;color:rgba(255,255,255,.38);white-space:nowrap;}
+    .hb-pills{display:flex;flex-wrap:wrap;gap:.3rem;}
+    .hb-pill{font-family:'Inconsolata',monospace;font-size:.62rem;letter-spacing:.05em;padding:.2rem .6rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.55);border-radius:2px;}
+    .hb-edu{display:flex;flex-direction:column;gap:.5rem;}
+    .hb-edu-row{display:flex;align-items:flex-start;gap:.6rem;}
+    .hb-edu-icon{font-size:.4rem;color:var(--accent2);margin-top:.35rem;flex-shrink:0;}
+    .hb-edu-deg{font-size:.82rem;color:rgba(255,255,255,.75);font-weight:300;line-height:1.3;}
+    .hb-edu-uni{font-family:'Inconsolata',monospace;font-size:.63rem;color:rgba(255,255,255,.32);letter-spacing:.05em;}
+    section{padding:6rem 8vw;scroll-margin-top:88px;}
+    section:nth-child(even){background:var(--white);}
+    .sec-head{display:flex;align-items:baseline;gap:1.5rem;margin-bottom:3.5rem;}
+    h2{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,3vw,2.5rem);font-weight:400;color:var(--navy);line-height:1.1;}
+    .sec-rule{flex:1;height:1px;background:var(--rule);margin-bottom:.15rem;}
+    .about-grid{display:grid;grid-template-columns:3fr 2fr;gap:5rem;align-items:start;}
+    .about-text p{font-size:.97rem;color:var(--mid);margin-bottom:1.25rem;line-height:1.9;font-weight:300;}
+    .about-text p strong{color:var(--ink);font-weight:500;}
+    .tl{display:flex;flex-direction:column;}
+    .tl-item{display:flex;gap:1rem;padding-bottom:1.4rem;position:relative;}
+    .tl-item:not(:last-child)::before{content:'';position:absolute;left:5px;top:12px;bottom:0;width:1px;background:var(--rule);}
+    .tl-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0;background:var(--white);border:2px solid var(--accent2);margin-top:3px;}
+    .tl-year{font-family:'Inconsolata',monospace;font-size:.68rem;color:var(--accent2);letter-spacing:.06em;margin-bottom:.15rem;}
+    .tl-title{font-size:.88rem;font-weight:500;color:var(--ink);}.tl-place{font-size:.8rem;color:var(--light);}
+    .areas{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.5rem;}
+    .area{padding:1.75rem;background:var(--white);border:1px solid var(--rule);border-radius:3px;transition:border-color .2s,box-shadow .2s;}
+    .area:hover{border-color:var(--accent2);box-shadow:0 4px 20px rgba(0,0,0,.05);}
+    .area-n{font-family:'Inconsolata',monospace;font-size:.62rem;color:var(--accent2);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.75rem;}
+    .area-t{font-size:.97rem;font-weight:500;color:var(--navy);margin-bottom:.5rem;}
+    .area-d{font-size:.85rem;color:var(--mid);line-height:1.75;font-weight:300;}
+    .pub-filters{display:flex;gap:.6rem;margin-bottom:2.5rem;position:relative;z-index:1;}
+    .pub-filter{font-family:'Inconsolata',monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;padding:.35rem 1rem;border-radius:2px;border:1px solid var(--rule);background:transparent;color:var(--mid);cursor:pointer;transition:.2s;position:relative;z-index:2;-webkit-appearance:none;}
+    .pub-filter:hover,.pub-filter.active{background:var(--navy);border-color:var(--navy);color:#fff;}
+    .pub-list{display:flex;flex-direction:column;gap:.75rem;}
+    .pub-item{display:grid;grid-template-columns:80px 1fr;gap:1.25rem;padding:1.25rem;background:var(--white);border:1px solid var(--rule);border-radius:3px;transition:.2s;}
+    .pub-item:hover{border-color:var(--accent2);}
+    .pub-left{display:flex;flex-direction:column;align-items:center;gap:.5rem;padding-top:.2rem;}
+    .pub-year{font-family:'Inconsolata',monospace;font-size:.78rem;font-weight:500;color:var(--navy);}
+    .pub-type{font-family:'Inconsolata',monospace;font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;padding:.2rem .5rem;border-radius:2px;text-align:center;}
+    .pub-type.journal{background:#e8f0f7;color:#2b4057;}.pub-type.conf{background:#e8f4ed;color:#1a5e2f;}
+    .pub-title{font-size:.95rem;font-weight:500;color:var(--navy);margin-bottom:.3rem;line-height:1.5;}
+    .pub-authors{font-size:.82rem;color:var(--mid);margin-bottom:.25rem;font-weight:300;}
+    .pub-venue{font-size:.8rem;color:var(--accent2);font-style:italic;}
+    .pub-more{text-align:center;margin-top:1.5rem;font-size:.83rem;color:var(--mid);}.pub-more a{color:var(--accent);text-decoration:none;}
+    .thesis-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:1.25rem;}
+    .thesis-card{padding:1.75rem;background:var(--white);border:1px solid var(--rule);border-radius:3px;transition:.2s;}
+    .thesis-card:hover{border-color:var(--accent2);}
+    .thesis-status{font-family:'Inconsolata',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;padding:.2rem .7rem;border-radius:2px;display:inline-block;margin-bottom:1rem;}
+    .thesis-status.done{background:#e8f4ed;color:#1a5e2f;}.thesis-status.ongoing{background:#fef9e7;color:#7d6608;}
+    .thesis-name{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:500;color:var(--navy);margin-bottom:.3rem;}
+    .thesis-topic{font-size:.85rem;color:var(--mid);line-height:1.7;font-weight:300;margin-bottom:.75rem;}
+    .thesis-period{font-family:'Inconsolata',monospace;font-size:.68rem;color:var(--accent2);}
+    .teaching-grid{display:grid;grid-template-columns:1fr 1fr;gap:3.5rem;}
+    .teaching-section h3{font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:500;color:var(--navy);margin-bottom:1.25rem;padding-bottom:.75rem;border-bottom:1px solid var(--rule);}
+    .course-list{display:flex;flex-direction:column;}
+    .course-item{display:flex;justify-content:space-between;align-items:baseline;padding:.7rem 0;border-bottom:1px solid var(--rule);}.course-item:last-child{border:none;}
+    .course-name{font-size:.88rem;font-weight:500;color:var(--ink);}.course-detail{font-size:.76rem;color:var(--light);margin-top:.15rem;font-weight:300;}
+    .course-level{font-family:'Inconsolata',monospace;font-size:.64rem;color:var(--accent2);background:rgba(74,127,165,.08);padding:.2rem .55rem;border-radius:2px;white-space:nowrap;flex-shrink:0;margin-left:1rem;}
+    .resp-list{display:flex;flex-direction:column;max-width:860px;}
+    .resp-item{display:grid;grid-template-columns:110px 1fr;gap:2rem;padding:1.25rem 0;border-bottom:1px solid var(--rule);}.resp-item:first-child{border-top:1px solid var(--rule);}
+    .resp-period{font-family:'Inconsolata',monospace;font-size:.7rem;color:var(--accent2);line-height:1.6;}
+    .resp-title{font-size:.93rem;font-weight:500;color:var(--ink);margin-bottom:.25rem;}
+    .resp-desc{font-size:.83rem;color:var(--mid);line-height:1.75;font-weight:300;}
+    .projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.25rem;}
+    .project-card{padding:1.75rem;background:var(--bg);border:1px solid var(--rule);border-radius:3px;transition:.2s;}
+    .project-card:hover{background:var(--white);border-color:var(--accent2);}
+    .project-header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:.35rem;}
+    .project-abbr{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:500;color:var(--accent);}
+    .project-date{font-family:'Inconsolata',monospace;font-size:.65rem;color:var(--accent2);letter-spacing:.06em;}
+    .project-name{font-size:.82rem;font-weight:500;color:var(--navy);margin-bottom:.5rem;}
+    .project-desc{font-size:.82rem;color:var(--mid);line-height:1.75;font-weight:300;}
+    .ws-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1rem;margin-bottom:2.5rem;}
+    .ws-card{padding:1.25rem 1.5rem;background:var(--white);border:1px solid var(--rule);border-radius:3px;display:flex;gap:1.25rem;align-items:flex-start;transition:border-color .2s;}
+    .ws-card:hover{border-color:var(--accent2);}
+    .ws-card-year{font-family:'Inconsolata',monospace;font-size:.72rem;color:var(--accent2);font-weight:500;flex-shrink:0;padding-top:.15rem;min-width:32px;}
+    .ws-card-body{display:flex;flex-direction:column;gap:.2rem;}
+    .ws-card-name{font-size:.88rem;font-weight:500;color:var(--ink);line-height:1.4;}
+    .ws-card-role{font-family:'Inconsolata',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.08em;color:var(--accent2);}
+    .ws-card-venue{font-size:.78rem;color:var(--light);font-weight:300;}
+    .ws-review-box{padding:1.5rem 2rem;background:var(--white);border:1px solid var(--rule);border-radius:3px;max-width:820px;}
+    .ws-review-label{font-family:'Inconsolata',monospace;font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--accent2);margin-bottom:.75rem;}
+    .ws-review-text{font-size:.88rem;color:var(--mid);font-weight:300;line-height:1.85;}.ws-review-text strong{color:var(--ink);font-weight:500;}
+    #contact{background:var(--navy);color:#fff;padding:6rem 8vw;scroll-margin-top:88px;}
+    #contact .sec-head{margin-bottom:3rem;}
+    #contact h2{color:#fff;}#contact .sec-rule{background:rgba(255,255,255,.1);}
+    .contact-inner{display:grid;grid-template-columns:1fr 1fr 1fr;gap:3rem;align-items:start;}
+    .contact-group-title{font-family:'Inconsolata',monospace;font-size:.62rem;color:rgba(255,255,255,.35);letter-spacing:.12em;text-transform:uppercase;margin-bottom:1.25rem;}
+    .contact-list{display:flex;flex-direction:column;gap:1.1rem;}
+    .c-label{font-family:'Inconsolata',monospace;font-size:.62rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.2rem;}
+    .c-val{font-size:.9rem;color:rgba(255,255,255,.8);line-height:1.65;}.c-val a{color:rgba(255,255,255,.8);text-decoration:none;transition:color .2s;}.c-val a:hover{color:var(--accent2);}
+    .profile-links{display:flex;flex-direction:column;gap:.6rem;}
+    .profile-link{display:flex;align-items:center;gap:1rem;padding:.75rem 1rem;border:1px solid rgba(255,255,255,.1);border-radius:3px;text-decoration:none;color:rgba(255,255,255,.75);font-size:.85rem;transition:.2s;}
+    .profile-link:hover{background:rgba(255,255,255,.06);border-color:var(--accent2);color:#fff;}
+    .plink-label{font-family:'Inconsolata',monospace;font-size:.6rem;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.08em;display:block;}
+    footer{background:#111;color:rgba(255,255,255,.25);text-align:center;padding:1.5rem;font-family:'Inconsolata',monospace;font-size:.68rem;letter-spacing:.08em;display:flex;justify-content:center;align-items:center;gap:2rem;flex-wrap:wrap;}
+    .footer-upd{color:rgba(255,255,255,.15);}
+    @media(max-width:900px){
+      .hero-top{grid-template-columns:1fr;}.hero-left{padding:3.5rem 6vw 2.5rem;}.hero-right{padding:2.5rem 6vw 3rem;}
+      .hero-bottom{flex-direction:column;gap:1.5rem;padding:2rem 6vw;}.hb-block{padding:0;width:100%;}.hb-vline{display:none;}.hb-stats-row{flex-wrap:wrap;}
+      .about-grid{grid-template-columns:1fr;gap:3rem;}.teaching-grid{grid-template-columns:1fr;gap:2.5rem;}
+      .ws-grid{grid-template-columns:1fr;}.projects-grid{grid-template-columns:repeat(2,1fr);}
+      .contact-inner{grid-template-columns:1fr 1fr;}
+      section{padding:4rem 6vw;}#contact{padding:4rem 6vw;}
     }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body { font-family: 'Jost', sans-serif; background: var(--bg); color: var(--ink); line-height: 1.7; }
-
-    /* NAV */
-    nav { position: fixed; top: 30px; left: 0; right: 0; z-index: 100; background: rgba(249,248,246,.96); backdrop-filter: blur(10px); border-bottom: 1px solid var(--rule); display: flex; align-items: center; justify-content: space-between; padding: 0 6vw; height: 58px; }
-    .nav-logo { font-family: 'Inconsolata', monospace; font-size: .78rem; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); text-decoration: none; }
-    .nav-links { display: flex; gap: 2rem; list-style: none; }
-    .nav-links a { font-size: .78rem; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: var(--mid); text-decoration: none; transition: color .2s; }
-    .nav-links a:hover { color: var(--accent); }
-    .nav-toggle { display: none; background: none; border: none; cursor: pointer; flex-direction: column; gap: 5px; }
-    .nav-toggle span { display: block; width: 22px; height: 1.5px; background: var(--ink); }
-
-    /* HERO */
-    #hero { min-height: 100vh; padding-top: 88px; display: flex; flex-direction: column; }
-    .hero-top { flex: 1; display: grid; grid-template-columns: 5fr 7fr; }
-    .hero-left { padding: 5rem 4vw 4rem 8vw; display: flex; flex-direction: column; justify-content: center; gap: 2rem; }
-    .hero-eyebrow { font-family: 'Inconsolata', monospace; font-size: .68rem; letter-spacing: .22em; text-transform: uppercase; color: var(--accent2); }
-    .hero-name-block { display: flex; align-items: center; gap: 1.5rem; }
-    .hero-photo { width: 140px; height: 140px; border-radius: 50%; overflow: hidden; flex-shrink: 0; border: 1.5px solid var(--rule); box-shadow: 0 4px 18px rgba(0,0,0,.09); }
-    .hero-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
-    h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.6rem, 4vw, 4.2rem); font-weight: 400; line-height: 1.0; color: var(--navy); letter-spacing: -.01em; }
-    h1 em { font-style: italic; font-weight: 500; color: var(--accent); }
-    .hero-meta { display: flex; flex-direction: column; gap: .35rem; }
-    .hi-title { font-size: .85rem; color: var(--mid); font-weight: 300; line-height: 1.5; }
-    .hi-inst { font-family: 'Inconsolata', monospace; font-size: .67rem; color: var(--accent2); letter-spacing: .1em; text-transform: uppercase; }
-    .hero-profile-links { display: flex; align-items: center; gap: .5rem; margin-top: .35rem; }
-    .hero-profile-links a { font-family: 'Inconsolata', monospace; font-size: .68rem; color: var(--mid); text-decoration: none; transition: color .2s; }
-    .hero-profile-links a:hover { color: var(--accent); }
-    .hero-profile-links span { color: var(--rule); }
-    .btn-row { display: flex; gap: .75rem; }
-    .btn-primary { background: var(--navy); color: #fff; padding: .65rem 1.5rem; font-size: .75rem; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; text-decoration: none; border-radius: 2px; transition: background .2s; }
-    .btn-primary:hover { background: var(--accent); }
-    .btn-ghost { border: 1px solid var(--rule); color: var(--mid); padding: .65rem 1.5rem; font-size: .75rem; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; text-decoration: none; border-radius: 2px; transition: .2s; }
-    .btn-ghost:hover { border-color: var(--navy); color: var(--navy); }
-    .hero-right { padding: 5rem 8vw 4rem 5vw; display: flex; flex-direction: column; justify-content: center; background: var(--white); }
-    .hero-bio-label { font-family: 'Inconsolata', monospace; font-size: .68rem; letter-spacing: .18em; text-transform: uppercase; color: var(--accent2); margin-bottom: 1rem; }
-    .hero-bio p { font-size: .93rem; color: var(--mid); font-weight: 300; line-height: 1.95; margin-bottom: .9rem; }
-    .hero-bio p:last-child { margin-bottom: 0; }
-    .hero-bio strong { color: var(--ink); font-weight: 500; }
-    .hero-bio em { font-style: italic; }
-
-    /* HERO BOTTOM BAR */
-    .hero-bottom { background: var(--navy); padding: 1.75rem 8vw; display: flex; align-items: stretch; gap: 0; }
-    .hb-block { display: flex; flex-direction: column; gap: .6rem; padding: 0 2.5rem; flex: 1; }
-    .hb-block:first-child { padding-left: 0; }
-    .hb-block:last-child { padding-right: 0; }
-    .hb-vline { width: 1px; background: rgba(255,255,255,.1); margin: .25rem 0; flex-shrink: 0; }
-    .hb-label { font-family: 'Inconsolata', monospace; font-size: .58rem; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.28); margin-bottom: .1rem; }
-    .hb-stats-row { display: flex; align-items: center; }
-    .hb-stat { display: flex; align-items: baseline; gap: .4rem; padding: 0 1.1rem; }
-    .hb-stat:first-child { padding-left: 0; }
-    .hb-divline { width: 1px; height: 1.2rem; background: rgba(255,255,255,.12); flex-shrink: 0; }
-    .hb-n { font-family: 'Cormorant Garamond', serif; font-size: 1.7rem; font-weight: 500; color: #fff; line-height: 1; }
-    .hb-n sup { font-size: .75rem; color: var(--accent2); }
-    .hb-l { font-family: 'Inconsolata', monospace; font-size: .62rem; text-transform: uppercase; letter-spacing: .07em; color: rgba(255,255,255,.38); white-space: nowrap; }
-    .hb-pills { display: flex; flex-wrap: wrap; gap: .3rem; }
-    .hb-pill { font-family: 'Inconsolata', monospace; font-size: .62rem; letter-spacing: .05em; padding: .2rem .6rem; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); color: rgba(255,255,255,.55); border-radius: 2px; }
-    .hb-edu { display: flex; flex-direction: column; gap: .5rem; }
-    .hb-edu-row { display: flex; align-items: flex-start; gap: .6rem; }
-    .hb-edu-icon { font-size: .4rem; color: var(--accent2); margin-top: .35rem; flex-shrink: 0; }
-    .hb-edu-deg { font-size: .82rem; color: rgba(255,255,255,.75); font-weight: 300; line-height: 1.3; }
-    .hb-edu-uni { font-family: 'Inconsolata', monospace; font-size: .63rem; color: rgba(255,255,255,.32); letter-spacing: .05em; }
-
-    /* SECTIONS */
-    section { padding: 6rem 8vw; scroll-margin-top: 88px; }
-    section:nth-child(even) { background: var(--white); }
-    .sec-head { display: flex; align-items: baseline; gap: 1.5rem; margin-bottom: 3.5rem; }
-    h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 400; color: var(--navy); line-height: 1.1; }
-    .sec-rule { flex: 1; height: 1px; background: var(--rule); margin-bottom: .15rem; }
-
-    /* ABOUT */
-    .about-grid { display: grid; grid-template-columns: 3fr 2fr; gap: 5rem; align-items: start; }
-    .about-text p { font-size: .97rem; color: var(--mid); margin-bottom: 1.25rem; line-height: 1.9; font-weight: 300; }
-    .about-text p strong { color: var(--ink); font-weight: 500; }
-    .tl { display: flex; flex-direction: column; }
-    .tl-item { display: flex; gap: 1rem; padding-bottom: 1.4rem; position: relative; }
-    .tl-item:not(:last-child)::before { content:''; position:absolute; left:5px; top:12px; bottom:0; width:1px; background: var(--rule); }
-    .tl-dot { width:11px; height:11px; border-radius:50%; flex-shrink:0; background: var(--white); border:2px solid var(--accent2); margin-top:3px; }
-    .tl-year { font-family:'Inconsolata',monospace; font-size:.68rem; color:var(--accent2); letter-spacing:.06em; margin-bottom:.15rem; }
-    .tl-title { font-size:.88rem; font-weight:500; color:var(--ink); }
-    .tl-place { font-size:.8rem; color:var(--light); }
-
-    /* RESEARCH */
-    .areas { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:1.5rem; }
-    .area { padding: 1.75rem; background: var(--white); border: 1px solid var(--rule); border-radius: 3px; transition: border-color .2s, box-shadow .2s; }
-    .area:hover { border-color: var(--accent2); box-shadow: 0 4px 20px rgba(0,0,0,.05); }
-    .area-n { font-family:'Inconsolata',monospace; font-size:.62rem; color:var(--accent2); letter-spacing:.12em; text-transform:uppercase; margin-bottom:.75rem; }
-    .area-t { font-size:.97rem; font-weight:500; color:var(--navy); margin-bottom:.5rem; }
-    .area-d { font-size:.85rem; color:var(--mid); line-height:1.75; font-weight:300; }
-
-    /* PUBLICATIONS */
-    .pub-filters { display: flex; gap: .6rem; margin-bottom: 2.5rem; }
-    .pub-filter { font-family: 'Inconsolata', monospace; font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; padding: .35rem 1rem; border-radius: 2px; border: 1px solid var(--rule); background: transparent; color: var(--mid); cursor: pointer; transition: .2s; }
-    .pub-filter:hover, .pub-filter.active { background: var(--navy); border-color: var(--navy); color: #fff; }
-    .pub-list { display: flex; flex-direction: column; gap: .75rem; }
-    .pub-item { display: grid; grid-template-columns: 80px 1fr; gap: 1.25rem; padding: 1.25rem; background: var(--white); border: 1px solid var(--rule); border-radius: 3px; transition: .2s; }
-    .pub-item:hover { border-color: var(--accent2); }
-    .pub-left { display: flex; flex-direction: column; align-items: center; gap: .5rem; padding-top: .2rem; }
-    .pub-year { font-family:'Inconsolata',monospace; font-size:.78rem; font-weight:500; color:var(--navy); }
-    .pub-type { font-family:'Inconsolata',monospace; font-size:.6rem; letter-spacing:.08em; text-transform:uppercase; padding:.2rem .5rem; border-radius:2px; text-align:center; }
-    .pub-type.journal { background:#e8f0f7; color:#2b4057; }
-    .pub-type.conf { background:#e8f4ed; color:#1a5e2f; }
-    .pub-title { font-size:.95rem; font-weight:500; color:var(--navy); margin-bottom:.3rem; line-height:1.5; }
-    .pub-authors { font-size:.82rem; color:var(--mid); margin-bottom:.25rem; font-weight:300; }
-    .pub-venue { font-size:.8rem; color:var(--accent2); font-style:italic; }
-    .pub-more { text-align:center; margin-top:1.5rem; font-size:.83rem; color:var(--mid); }
-    .pub-more a { color:var(--accent); text-decoration:none; }
-
-    /* SUPERVISION */
-    .thesis-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(270px,1fr)); gap:1.25rem; }
-    .thesis-card { padding:1.75rem; background:var(--white); border:1px solid var(--rule); border-radius:3px; transition:.2s; }
-    .thesis-card:hover { border-color:var(--accent2); }
-    .thesis-status { font-family:'Inconsolata',monospace; font-size:.62rem; letter-spacing:.1em; text-transform:uppercase; padding:.2rem .7rem; border-radius:2px; display:inline-block; margin-bottom:1rem; }
-    .thesis-status.done { background:#e8f4ed; color:#1a5e2f; }
-    .thesis-status.ongoing { background:#fef9e7; color:#7d6608; }
-    .thesis-name { font-family:'Cormorant Garamond',serif; font-size:1.15rem; font-weight:500; color:var(--navy); margin-bottom:.3rem; }
-    .thesis-topic { font-size:.85rem; color:var(--mid); line-height:1.7; font-weight:300; margin-bottom:.75rem; }
-    .thesis-period { font-family:'Inconsolata',monospace; font-size:.68rem; color:var(--accent2); }
-
-    /* TEACHING */
-    .teaching-grid { display:grid; grid-template-columns:1fr 1fr; gap:3.5rem; }
-    .teaching-section h3 { font-family:'Cormorant Garamond',serif; font-size:1.35rem; font-weight:500; color:var(--navy); margin-bottom:1.25rem; padding-bottom:.75rem; border-bottom:1px solid var(--rule); }
-    .course-list { display:flex; flex-direction:column; }
-    .course-item { display:flex; justify-content:space-between; align-items:baseline; padding:.7rem 0; border-bottom:1px solid var(--rule); }
-    .course-item:last-child { border:none; }
-    .course-name { font-size:.88rem; font-weight:500; color:var(--ink); }
-    .course-detail { font-size:.76rem; color:var(--light); margin-top:.15rem; font-weight:300; }
-    .course-level { font-family:'Inconsolata',monospace; font-size:.64rem; color:var(--accent2); background:rgba(74,127,165,.08); padding:.2rem .55rem; border-radius:2px; white-space:nowrap; flex-shrink:0; margin-left:1rem; }
-    .resp-list { display:flex; flex-direction:column; max-width:860px; }
-    .resp-item { display:grid; grid-template-columns:110px 1fr; gap:2rem; padding:1.25rem 0; border-bottom:1px solid var(--rule); }
-    .resp-item:first-child { border-top:1px solid var(--rule); }
-    .resp-period { font-family:'Inconsolata',monospace; font-size:.7rem; color:var(--accent2); line-height:1.6; }
-    .resp-title { font-size:.93rem; font-weight:500; color:var(--ink); margin-bottom:.25rem; }
-    .resp-desc { font-size:.83rem; color:var(--mid); line-height:1.75; font-weight:300; }
-
-    /* PROJECTS */
-    .projects-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:1.25rem; }
-    .project-card { padding:1.75rem; background:var(--bg); border:1px solid var(--rule); border-radius:3px; transition:.2s; }
-    .project-card:hover { background:var(--white); border-color:var(--accent2); }
-    .project-abbr { font-family:'Cormorant Garamond',serif; font-size:1.5rem; font-weight:500; color:var(--accent); margin-bottom:.35rem; }
-    .project-name { font-size:.82rem; font-weight:500; color:var(--navy); margin-bottom:.5rem; }
-    .project-desc { font-size:.82rem; color:var(--mid); line-height:1.75; font-weight:300; }
-
-    /* WORKSHOPS — reorganised */
-    .ws-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1rem;
-      margin-bottom: 2.5rem;
+    @media(max-width:600px){
+      .nav-links{display:none;}.nav-toggle{display:flex;}
+      .nav-links.open{display:flex;flex-direction:column;position:fixed;top:88px;left:0;right:0;background:var(--bg);border-bottom:1px solid var(--rule);padding:1.5rem 6vw;gap:1.2rem;z-index:99;}
+      .hero-left{padding:2.5rem 5vw 2rem;gap:1.5rem;}.hero-right{padding:2rem 5vw 2.5rem;}
+      .hero-photo{width:100px;height:100px;}h1{font-size:2.4rem;}
+      section{padding:3rem 5vw;}#contact{padding:3rem 5vw;}
+      .sec-head{flex-wrap:wrap;gap:.5rem;}
+      .pub-filters{gap:.4rem;}.pub-filter{padding:.3rem .75rem;font-size:.62rem;}
+      .pub-item{grid-template-columns:1fr;gap:.75rem;padding:1rem;}.pub-left{flex-direction:row;align-items:center;gap:.75rem;}
+      .thesis-grid{grid-template-columns:1fr;}.resp-item{grid-template-columns:1fr;gap:.2rem;}
+      .projects-grid{grid-template-columns:1fr;}.ws-card{padding:1rem;}
+      .contact-inner{grid-template-columns:1fr;}
     }
-    .ws-card {
-      padding: 1.25rem 1.5rem;
-      background: var(--white);
-      border: 1px solid var(--rule);
-      border-radius: 3px;
-      display: flex; gap: 1.25rem; align-items: flex-start;
-      transition: border-color .2s;
+    @media(max-width:400px){
+      .lang-label{display:none;}
+      .hb-stats-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}.hb-divline{display:none;}.hb-stat{padding:0;}
+      .btn-row{flex-direction:column;}.btn-primary,.btn-ghost{text-align:center;}
     }
-    .ws-card:hover { border-color: var(--accent2); }
-    .ws-card-year {
-      font-family: 'Inconsolata', monospace;
-      font-size: .72rem; color: var(--accent2);
-      font-weight: 500; flex-shrink: 0;
-      padding-top: .15rem;
-      min-width: 32px;
-    }
-    .ws-card-body { display: flex; flex-direction: column; gap: .2rem; }
-    .ws-card-name { font-size: .88rem; font-weight: 500; color: var(--ink); line-height: 1.4; }
-    .ws-card-role {
-      font-family: 'Inconsolata', monospace;
-      font-size: .65rem; text-transform: uppercase;
-      letter-spacing: .08em; color: var(--accent2);
-    }
-    .ws-card-venue { font-size: .78rem; color: var(--light); font-weight: 300; }
-    .ws-review-box {
-      padding: 1.5rem 2rem;
-      background: var(--white);
-      border: 1px solid var(--rule);
-      border-radius: 3px;
-      max-width: 820px;
-    }
-    .ws-review-label {
-      font-family: 'Inconsolata', monospace;
-      font-size: .62rem; letter-spacing: .15em; text-transform: uppercase;
-      color: var(--accent2); margin-bottom: .75rem;
-    }
-    .ws-review-text { font-size: .88rem; color: var(--mid); font-weight: 300; line-height: 1.85; }
-    .ws-review-text strong { color: var(--ink); font-weight: 500; }
-
-    /* CONTACT */
-    #contact { background: var(--navy); color:#fff; display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:start; }
-    #contact h2 { color:#fff; }
-    #contact .sec-rule { background:rgba(255,255,255,.1); }
-    .contact-list { display:flex; flex-direction:column; gap:1.25rem; }
-    .c-label { font-family:'Inconsolata',monospace; font-size:.62rem; color:rgba(255,255,255,.4); text-transform:uppercase; letter-spacing:.1em; margin-bottom:.2rem; }
-    .c-val { font-size:.9rem; color:rgba(255,255,255,.8); line-height:1.65; }
-    .c-val a { color:rgba(255,255,255,.8); text-decoration:none; transition:color .2s; }
-    .c-val a:hover { color:var(--accent2); }
-    .profile-links { display:flex; flex-direction:column; gap:.75rem; }
-    .profile-link { display:flex; align-items:center; gap:1rem; padding:.9rem 1.25rem; border:1px solid rgba(255,255,255,.1); border-radius:3px; text-decoration:none; color:rgba(255,255,255,.75); font-size:.87rem; transition:.2s; }
-    .profile-link:hover { background:rgba(255,255,255,.06); border-color:var(--accent2); color:#fff; }
-    .plink-label { font-family:'Inconsolata',monospace; font-size:.62rem; color:rgba(255,255,255,.35); text-transform:uppercase; letter-spacing:.08em; display:block; }
-
-    footer { background:#111; color:rgba(255,255,255,.25); text-align:center; padding:1.5rem; font-family:'Inconsolata',monospace; font-size:.68rem; letter-spacing:.08em; }
-
-    /* RESPONSIVE */
-    @media (max-width:900px) {
-      .hero-top { grid-template-columns:1fr; }
-      .hero-left { padding:3.5rem 6vw 2.5rem; }
-      .hero-right { padding:2.5rem 6vw 3rem; }
-      .hero-bottom { flex-wrap: wrap; gap: 1.5rem; padding: 1.5rem 6vw; }
-      .hb-block { padding: 0; flex: auto; min-width: 45%; }
-      .hb-vline { display: none; }
-      .about-grid { grid-template-columns:1fr; gap:3rem; }
-      .teaching-grid { grid-template-columns:1fr; }
-      #contact { grid-template-columns:1fr; gap:3rem; }
-      section { padding:4rem 6vw; }
-    }
-    @media (max-width:600px) {
-      .nav-links { display:none; }
-      .nav-toggle { display:flex; }
-      .nav-links.open { display:flex; flex-direction:column; position:fixed; top:88px; left:0; right:0; background:var(--bg); border-bottom:1px solid var(--rule); padding:1.5rem 6vw; gap:1.2rem; }
-      .sec-head { flex-wrap: wrap; }
-      .pub-item { grid-template-columns:1fr; }
-      .pub-left { flex-direction:row; align-items:center; }
-      .resp-item { grid-template-columns:1fr; gap:.25rem; }
-    }
-
-    /* LANG BAR */
-    #langBar {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-      background: var(--navy);
-      display: flex; align-items: center; justify-content: flex-end;
-      padding: 0 6vw; height: 30px; gap: 1rem;
-    }
-    .lang-label {
-      font-family: 'Inconsolata', monospace; font-size: .6rem;
-      letter-spacing: .18em; text-transform: uppercase;
-      color: rgba(255,255,255,.3);
-    }
-    .lang-toggle { display: flex; gap: 2px; }
-    .lang-btn {
-      font-family: 'Inconsolata', monospace; font-size: .7rem;
-      font-weight: 500; letter-spacing: .12em;
-      padding: .15rem .7rem; border-radius: 2px; border: none;
-      cursor: pointer; transition: .2s;
-      background: transparent; color: rgba(255,255,255,.35);
-    }
-    .lang-btn.active { background: rgba(255,255,255,.12); color: #fff; }
-    .lang-btn:hover:not(.active) { color: rgba(255,255,255,.7); }
   </style>
 </head>
 <body>
@@ -276,26 +186,23 @@
 <div id="langBar">
   <span class="lang-label">Language</span>
   <div class="lang-toggle">
-    <button class="lang-btn active">EN</button>
-    <button class="lang-btn" onclick="window.location.href='fr.html'">FR</button>
+    <button class="lang-btn active" >EN</button>
+    <button class="lang-btn" onclick="window.location.href='labiod_fr.html'">FR</button>
   </div>
 </div>
 
 <nav>
   <a class="nav-logo" href="#">L. Labiod</a>
-  <ul class="nav-links" id="navLinks">
-    <li><a href="#about">About</a></li>
-    <li><a href="#research">Research</a></li>
-    <li><a href="#publications">Publications</a></li>
-    <li><a href="#supervision">Supervision</a></li>
-    <li><a href="#teaching">Teaching</a></li>
-    <li><a href="#workshops">Events</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
+  <ul class="nav-links" id="navLinks"><li><a href="#about">About</a></li>
+<li><a href="#research">Research</a></li>
+<li><a href="#publications">Publications</a></li>
+<li><a href="#supervision">Supervision</a></li>
+<li><a href="#teaching">Teaching</a></li>
+<li><a href="#workshops">Events</a></li>
+<li><a href="#contact">Contact</a></li></ul>
   <button class="nav-toggle" id="navToggle"><span></span><span></span><span></span></button>
 </nav>
 
-<!-- HERO -->
 <section id="hero">
   <div class="hero-top">
     <div class="hero-left">
@@ -305,14 +212,12 @@
         <h1>Lazhar<br><em>Labiod</em></h1>
       </div>
       <div class="hero-meta">
-        <div class="hi-title">Associate Professor (MCF-HDR)<br>Machine Learning & Data Science</div>
+        <div class="hi-title">Associate Professor (MCF-HDR)<br>Machine Learning &amp; Data Science</div>
         <div class="hi-inst">Centre Borelli UMR 9010 · AI-DSCy</div>
         <div class="hero-profile-links">
-          <a href="https://scholar.google.com/citations?user=QCnZU7sAAAAJ&hl=fr" target="_blank">Google Scholar</a>
-          <span>·</span>
-          <a href="https://dblp.org" target="_blank">DBLP</a>
-          <span>·</span>
-          <a href="https://orcid.org" target="_blank">ORCID</a>
+          <a href="https://scholar.google.com" target="_blank">Google Scholar</a>
+          <span>·</span><a href="https://dblp.org" target="_blank">DBLP</a>
+          <span>·</span><a href="https://orcid.org" target="_blank">ORCID</a>
         </div>
       </div>
       <div class="btn-row">
@@ -320,14 +225,10 @@
         <a href="#contact" class="btn-ghost">Contact</a>
       </div>
     </div>
-    <div class="hero-right">
-      <div class="hero-bio">
-        <div class="hero-bio-label">Short Bio</div>
+    <div class="hero-right"><div class="hero-bio"><div class="hero-bio-label">Short Bio</div>
         <p>Lazhar Labiod is an Assistant Professor at the <strong>IUT de Paris – Rives de Seine</strong>, Université Paris Cité, and a researcher affiliated with the <strong>Centre Borelli</strong>. He received his Ph.D. in Statistics from Pierre and Marie Curie University (Paris 6), France.</p>
-        <p>His research focuses on <strong>machine learning and data mining</strong>, with particular emphasis on data embedding and co-clustering methods for addressing complex AI problems in real-world applications. His work spans biomedical data analysis, tensor and attributed graph co-clustering, recommender systems, and multi-view data mining.</p>
-        <p>Dr. Labiod's research has been published in leading venues including <strong>IEEE TNNLS</strong>, <strong>IEEE TKDE</strong>, <strong>Pattern Recognition</strong>, and major conferences such as <strong>WSDM</strong>, <strong>ICDM</strong>, <strong>CIKM</strong>, and <strong>SIGIR</strong>.</p>
-      </div>
-    </div>
+        <p>His research focuses on <strong>machine learning and data mining</strong>, with particular emphasis on data embedding and co-clustering methods for complex AI problems. His work spans biomedical data analysis, tensor and attributed graph co-clustering, recommender systems, and multi-view data mining.</p>
+        <p>His research has been published in leading venues: <strong>IEEE TNNLS</strong>, <strong>IEEE TKDE</strong>, <strong>Pattern Recognition</strong>, <strong>WSDM</strong>, <strong>ICDM</strong>, <strong>CIKM</strong>, and <strong>SIGIR</strong>.</p></div></div>
   </div>
   <div class="hero-bottom">
     <div class="hb-block">
@@ -343,72 +244,43 @@
       </div>
     </div>
     <div class="hb-vline"></div>
-    <div class="hb-block">
-      <div class="hb-label">Interests</div>
-      <div class="hb-pills">
-        <span class="hb-pill">Artificial Intelligence</span>
-        <span class="hb-pill">Data Mining</span>
-        <span class="hb-pill">Machine Learning</span>
-        <span class="hb-pill">Deep Learning</span>
-        <span class="hb-pill">NLP</span>
-        <span class="hb-pill">Graph Neural Networks</span>
-        <span class="hb-pill">Trustworthy AI</span>
-      </div>
-    </div>
+    <div class="hb-block"><div class="hb-label">Interests</div><div class="hb-pills"><span class="hb-pill">Artificial Intelligence</span><span class="hb-pill">Data Mining</span><span class="hb-pill">Machine Learning</span><span class="hb-pill">Deep Learning</span><span class="hb-pill">NLP</span><span class="hb-pill">Graph Neural Networks</span><span class="hb-pill">Trustworthy AI</span></div></div>
     <div class="hb-vline"></div>
     <div class="hb-block">
       <div class="hb-label">Education</div>
       <div class="hb-edu">
-        <div class="hb-edu-row">
-          <span class="hb-edu-icon">◆</span>
-          <div><div class="hb-edu-deg">PhD — Applied Mathematics & Statistics</div><div class="hb-edu-uni">University of Paris 6</div></div>
-        </div>
-        <div class="hb-edu-row">
-          <span class="hb-edu-icon">◆</span>
-          <div><div class="hb-edu-deg">HDR — Computer Science</div><div class="hb-edu-uni">Université Paris Cité</div></div>
-        </div>
+        <div class="hb-edu-row"><span class="hb-edu-icon">◆</span><div><div class="hb-edu-deg">PhD — Applied Mathematics &amp; Statistics</div><div class="hb-edu-uni">Université Paris 6</div></div></div>
+        <div class="hb-edu-row"><span class="hb-edu-icon">◆</span><div><div class="hb-edu-deg">HDR — Computer Science</div><div class="hb-edu-uni">Université Paris Cité</div></div></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ABOUT -->
 <section id="about">
-  <div class="sec-head"><h2>Profile & Career</h2><div class="sec-rule"></div></div>
+  <div class="sec-head"><h2>Profile &amp; Career</h2><div class="sec-rule"></div></div>
   <div class="about-grid">
-    <div class="about-text">
-      <p>Associate Professor (<em>Maître de Conférences</em>) at <strong>IUT Paris Rives de Seine</strong> (Université Paris Cité) since 2013, I conduct my research at the <strong>Centre Borelli UMR 9010</strong> within the AI-DSCy team (Artificial Intelligence for Data Science and Cybersecurity).</p>
-      <p>My research focuses on the design of novel <strong>unsupervised machine learning</strong> methods — dimensionality reduction, graph-based representation learning, and co-clustering — drawing on matrix factorization, statistics, and optimization techniques.</p>
-      <p>In June 2025, I obtained my <strong>Habilitation à Diriger des Recherches (HDR)</strong>, recognising the maturity of my work on relational formalisms and unsupervised learning. That same year I was also awarded the individual <strong>RIPEC C3</strong> distinction.</p>
-      <p>On the academic side, I direct the <strong>Master 1 Machine Learning for Data Science (MLSD)</strong> programme in both full-time and apprenticeship tracks, and have co-directed the AMSD and MIAGE Masters since 2014.</p>
-    </div>
-    <div class="tl">
-      <div class="tl-item"><div class="tl-dot"></div><div><div class="tl-year">2025</div><div class="tl-title">HDR · RIPEC C3</div><div class="tl-place">Université Paris Cité</div></div></div>
-      <div class="tl-item"><div class="tl-dot"></div><div><div class="tl-year">2021 →</div><div class="tl-title">Director of Studies — M1 MLSD</div><div class="tl-place">Université Paris Cité</div></div></div>
-      <div class="tl-item"><div class="tl-dot"></div><div><div class="tl-year">2020 →</div><div class="tl-title">Researcher — AI-DSCy Team</div><div class="tl-place">Centre Borelli UMR 9010</div></div></div>
-      <div class="tl-item"><div class="tl-dot"></div><div><div class="tl-year">2013 →</div><div class="tl-title">Associate Professor (MCF)</div><div class="tl-place">IUT Paris Rives de Seine</div></div></div>
-      <div class="tl-item"><div class="tl-dot"></div><div><div class="tl-year">2011–2013</div><div class="tl-title">Postdoc — TotalEnergies / AgroParisTech</div><div class="tl-place">Multi-view & multi-way data modelling</div></div></div>
-      <div class="tl-item"><div class="tl-dot"></div><div><div class="tl-year">2010–2011</div><div class="tl-title">Postdoc — LIPADE</div><div class="tl-place">Université Paris 5</div></div></div>
-      <div class="tl-item"><div class="tl-dot"></div><div><div class="tl-year">2009–2010</div><div class="tl-title">Postdoc — LIPN</div><div class="tl-place">Université Paris 13</div></div></div>
-      <div class="tl-item"><div class="tl-dot"></div><div><div class="tl-year">2008</div><div class="tl-title">PhD — Applied Mathematics</div><div class="tl-place">Université Paris 6 (LSTA)</div></div></div>
-    </div>
+    <div class="about-text"><p>Associate Professor at <strong>IUT Paris Rives de Seine</strong> (Université Paris Cité) since 2013, I conduct my research at the <strong>Centre Borelli UMR 9010</strong> within the AI-DSCy team.</p><p>My research focuses on novel <strong>unsupervised machine learning</strong> methods — dimensionality reduction, graph-based representation learning, and co-clustering.</p><p>In June 2025, I obtained my <strong>HDR</strong> and the individual <strong>RIPEC C3</strong> distinction. I direct the <strong>Master 1 MLSD</strong> programme since 2021.</p></div>
+    <div class="tl"><div class="tl-item"><div class="tl-dot"></div><div><div class="tl-year">2025</div><div class="tl-title">HDR · RIPEC C3</div><div class="tl-place">Université Paris Cité</div></div></div>
+<div class="tl-item"><div class="tl-dot"></div><div><div class="tl-year">2021 →</div><div class="tl-title">Director of Studies — M1 MLSD</div><div class="tl-place">Université Paris Cité</div></div></div>
+<div class="tl-item"><div class="tl-dot"></div><div><div class="tl-year">2020 →</div><div class="tl-title">Researcher — AI-DSCy Team</div><div class="tl-place">Centre Borelli UMR 9010</div></div></div>
+<div class="tl-item"><div class="tl-dot"></div><div><div class="tl-year">2013 →</div><div class="tl-title">Associate Professor (MCF)</div><div class="tl-place">IUT Paris Rives de Seine</div></div></div>
+<div class="tl-item"><div class="tl-dot"></div><div><div class="tl-year">2011–2013</div><div class="tl-title">Postdoc — TotalEnergies / AgroParisTech</div><div class="tl-place">Multi-view data modelling</div></div></div>
+<div class="tl-item"><div class="tl-dot"></div><div><div class="tl-year">2010–2011</div><div class="tl-title">Postdoc — LIPADE</div><div class="tl-place">Université Paris 5</div></div></div>
+<div class="tl-item"><div class="tl-dot"></div><div><div class="tl-year">2009–2010</div><div class="tl-title">Postdoc — LIPN</div><div class="tl-place">Université Paris 13</div></div></div>
+<div class="tl-item"><div class="tl-dot"></div><div><div class="tl-year">2008</div><div class="tl-title">PhD — Applied Mathematics</div><div class="tl-place">Université Paris 6 (LSTA)</div></div></div></div>
   </div>
 </section>
 
-<!-- RESEARCH -->
 <section id="research">
   <div class="sec-head"><h2>Research Themes</h2><div class="sec-rule"></div></div>
-  <div class="areas">
-    <div class="area"><div class="area-n">Methods</div><div class="area-t">Joint Learning Paradigms</div><div class="area-d">Unified frameworks that simultaneously integrate dimensionality reduction and clustering, moving beyond sequential approaches for attribute data, simple graphs, and attributed graphs.</div></div>
-    <div class="area"><div class="area-n">Networks</div><div class="area-t">Attributed Graph Learning</div><div class="area-d">Modelling interdependencies in large-scale networks via affinity matrices and Graph Convolution, fusing topology and node attributes while preserving structural properties.</div></div>
-    <div class="area"><div class="area-n">Clustering</div><div class="area-t">Regularised Co-clustering</div><div class="area-d">Extending simultaneous learning to regularised co-clustering with semantic enrichment from prior information, with applications in Text Mining and biomedical data.</div></div>
-    <div class="area"><div class="area-n">Multi-way</div><div class="area-t">Tensor Modelling & LBM</div><div class="area-d">Algorithms dedicated to high-dimensional tensor co-clustering, adapting the Latent Block Model to various distributions for sparsity in recommendation systems.</div></div>
-    <div class="area"><div class="area-n">Robustness</div><div class="area-t">Ensemble Learning</div><div class="area-d">Novel co-clustering ensemble framework generating robust consensus partitions insensitive to initialisation and the number of clusters.</div></div>
-    <div class="area"><div class="area-n">Applications</div><div class="area-t">Biomedical Data Mining</div><div class="area-d">Omics data analysis, medical NLP, and heterogeneous data mining within ANR and ANSES-funded projects (GePhEx, MOLDASTH, MIMS).</div></div>
-  </div>
+  <div class="areas"><div class="area"><div class="area-n">Methods</div><div class="area-t">Joint Learning Paradigms</div><div class="area-d">Unified frameworks simultaneously integrating dimensionality reduction and clustering for attribute data, simple graphs, and attributed graphs.</div></div>
+<div class="area"><div class="area-n">Networks</div><div class="area-t">Attributed Graph Learning</div><div class="area-d">Modelling interdependencies in large-scale networks via affinity matrices and Graph Convolution, fusing topology and node attributes.</div></div>
+<div class="area"><div class="area-n">Clustering</div><div class="area-t">Regularised Co-clustering</div><div class="area-d">Extending simultaneous learning to regularised co-clustering with semantic enrichment, applied to Text Mining and biomedical data.</div></div>
+<div class="area"><div class="area-n">Multi-way</div><div class="area-t">Tensor Modelling & LBM</div><div class="area-d">Algorithms for high-dimensional tensor co-clustering, adapting the Latent Block Model to various distributions for recommender systems.</div></div>
+<div class="area"><div class="area-n">Robustness</div><div class="area-t">Ensemble Learning</div><div class="area-d">Novel co-clustering ensemble framework generating robust consensus partitions insensitive to initialisation and number of clusters.</div></div>
+<div class="area"><div class="area-n">Applications</div><div class="area-t">Biomedical Data Mining</div><div class="area-d">Omics data analysis, medical NLP, and heterogeneous data mining within ANR and ANSES-funded projects (GePhEx, MOLDASTH, MIMS).</div></div></div>
 </section>
 
-<!-- PUBLICATIONS -->
 <section id="publications">
   <div class="sec-head"><h2>Selected Publications</h2><div class="sec-rule"></div></div>
   <div class="pub-filters">
@@ -429,119 +301,102 @@
     <div class="pub-item" data-type="conf"><div class="pub-left"><div class="pub-year">2022</div><span class="pub-type conf">Conf.</span></div><div><div class="pub-title">Efficient and Effective Optimal Transport-Based Biclustering</div><div class="pub-authors">Fettal, C., Labiod, L., Nadif, M.</div><div class="pub-venue">NeurIPS 2022</div></div></div>
     <div class="pub-item" data-type="journal"><div class="pub-left"><div class="pub-year">2020</div><span class="pub-type journal">Journal</span></div><div><div class="pub-title">Spectral Clustering via Ensemble Deep Autoencoder Learning (SC-EDAE)</div><div class="pub-authors">Affeldt, S., Labiod, L., Nadif, M.</div><div class="pub-venue">Pattern Recognition 108, 107522</div></div></div>
   </div>
-  <p class="pub-more">17 international journals · 37 international conferences · 21 national conferences —
-    <a href="https://scholar.google.com" target="_blank">Google Scholar</a> ·
-    <a href="https://dblp.org" target="_blank">DBLP</a> ·
-    <a href="https://orcid.org" target="_blank">ORCID</a>
-  </p>
+  <p class="pub-more">17 international journals · 37 international conferences · 21 national conferences — <a href="https://scholar.google.com" target="_blank">Google Scholar</a> · <a href="https://dblp.org" target="_blank">DBLP</a> · <a href="https://orcid.org" target="_blank">ORCID</a></p>
 </section>
 
-<!-- SUPERVISION -->
 <section id="supervision">
   <div class="sec-head"><h2>PhD Supervision</h2><div class="sec-rule"></div></div>
-  <div class="thesis-grid">
-    <div class="thesis-card"><span class="thesis-status ongoing">Ongoing</span><div class="thesis-name">Noor Khalal</div><div class="thesis-topic">Subspace-attributed graph co-clustering (CIFRE — Informatique CDC)</div><div class="thesis-period">Sept. 2025 → Sept. 2028</div></div>
-    <div class="thesis-card"><span class="thesis-status done">Defended</span><div class="thesis-name">Chakib Fettal</div><div class="thesis-topic">Subspace-attributed graph co-clustering — 6 intl. conferences, 1 journal (CIFRE)</div><div class="thesis-period">Sept. 2021 → Apr. 2024</div></div>
-    <div class="thesis-card"><span class="thesis-status done">Defended</span><div class="thesis-name">Rafika Boutalbi</div><div class="thesis-topic">Tensor Data Co-clustering — 3 conferences, 3 journals (CIFRE — TRINOV)</div><div class="thesis-period">Sept. 2016 → Sept. 2019</div></div>
-    <div class="thesis-card"><span class="thesis-status done">Defended</span><div class="thesis-name">Kais Allab</div><div class="thesis-topic">Matrix factorization for simultaneous co-clustering and embedding — 3 journals, 4 conferences</div><div class="thesis-period">Sept. 2013 → Sept. 2016</div></div>
-  </div>
+  <div class="thesis-grid"><div class="thesis-card"><span class="thesis-status ongoing">Ongoing</span><div class="thesis-name">Noor Khalal</div><div class="thesis-topic">Subspace-attributed graph co-clustering (CIFRE — Informatique CDC)</div><div class="thesis-period">Sept. 2025 → Sept. 2028</div></div>
+<div class="thesis-card"><span class="thesis-status done">Defended</span><div class="thesis-name">Chakib Fettal</div><div class="thesis-topic">Subspace-attributed graph co-clustering — 6 intl. conferences, 1 journal (CIFRE)</div><div class="thesis-period">Sept. 2021 → Apr. 2024</div></div>
+<div class="thesis-card"><span class="thesis-status done">Defended</span><div class="thesis-name">Rafika Boutalbi</div><div class="thesis-topic">Tensor Data Co-clustering — 3 conferences, 3 journals (CIFRE — TRINOV)</div><div class="thesis-period">Sept. 2016 → Sept. 2019</div></div>
+<div class="thesis-card"><span class="thesis-status done">Defended</span><div class="thesis-name">Kais Allab</div><div class="thesis-topic">Matrix factorization for simultaneous co-clustering and embedding — 3 journals, 4 conferences</div><div class="thesis-period">Sept. 2013 → Sept. 2016</div></div></div>
 </section>
 
-<!-- TEACHING -->
 <section id="teaching">
-  <div class="sec-head"><h2>Teaching & Responsibilities</h2><div class="sec-rule"></div></div>
+  <div class="sec-head"><h2>Teaching &amp; Responsibilities</h2><div class="sec-rule"></div></div>
   <div class="teaching-grid">
-    <div class="teaching-section">
-      <h3>Faculty of Science (UFR)</h3>
-      <div class="course-list">
-        <div class="course-item"><div><div class="course-name">Supervised Learning</div><div class="course-detail">Since 2015 · 30 students/group</div></div><span class="course-level">M2</span></div>
-        <div class="course-item"><div><div class="course-name">Optimisation for ML</div><div class="course-detail">Since 2023</div></div><span class="course-level">M1</span></div>
-        <div class="course-item"><div><div class="course-name">Matrix Factorization & Linear Algebra</div><div class="course-detail">Since 2015</div></div><span class="course-level">M2</span></div>
-        <div class="course-item"><div><div class="course-name">Data Science & Dimensionality Reduction</div><div class="course-detail">2016–2020</div></div><span class="course-level">M1</span></div>
-        <div class="course-item"><div><div class="course-name">Data Mining</div><div class="course-detail">2015–2021</div></div><span class="course-level">M1/MIAGE</span></div>
-      </div>
-    </div>
-    <div class="teaching-section">
-      <h3>IUT Paris Rives de Seine</h3>
-      <div class="course-list">
-        <div class="course-item"><div><div class="course-name">Python Programming – level 2</div><div class="course-detail">2021–2024 · ~90 students</div></div><span class="course-level">BUT1</span></div>
-        <div class="course-item"><div><div class="course-name">Statistical Programming with Python</div><div class="course-detail">2017–2024 · ~45 students</div></div><span class="course-level">BUT2</span></div>
-        <div class="course-item"><div><div class="course-name">SAS Statistical Programming</div><div class="course-detail">2013–2017</div></div><span class="course-level">DUT</span></div>
-        <div class="course-item"><div><div class="course-name">Database Structuring SQL/Oracle</div><div class="course-detail">2011–2016</div></div><span class="course-level">DUT</span></div>
-        <div class="course-item"><div><div class="course-name">Model Interpretability</div><div class="course-detail">BUT3 · Work-study track</div></div><span class="course-level">BUT3</span></div>
-      </div>
-    </div>
+    <div class="teaching-section"><h3>Faculty of Science (UFR)</h3><div class="course-list"><div class="course-item"><div><div class="course-name">Supervised Learning</div><div class="course-detail">Since 2015 · 30 students/group</div></div><span class="course-level">M2</span></div>
+<div class="course-item"><div><div class="course-name">Optimisation for ML</div><div class="course-detail">Since 2023</div></div><span class="course-level">M1</span></div>
+<div class="course-item"><div><div class="course-name">Matrix Factorization &amp; Linear Algebra</div><div class="course-detail">Since 2015</div></div><span class="course-level">M2</span></div>
+<div class="course-item"><div><div class="course-name">Data Science &amp; Dimensionality Reduction</div><div class="course-detail">2016–2020</div></div><span class="course-level">M1</span></div>
+<div class="course-item"><div><div class="course-name">Data Mining</div><div class="course-detail">2015–2021</div></div><span class="course-level">M1/MIAGE</span></div></div></div>
+    <div class="teaching-section"><h3>IUT Paris Rives de Seine</h3><div class="course-list"><div class="course-item"><div><div class="course-name">Python Programming – level 2</div><div class="course-detail">2021–2024 · ~90 students</div></div><span class="course-level">BUT1</span></div>
+<div class="course-item"><div><div class="course-name">Statistical Programming with Python</div><div class="course-detail">2017–2024 · ~45 students</div></div><span class="course-level">BUT2</span></div>
+<div class="course-item"><div><div class="course-name">SAS Statistical Programming</div><div class="course-detail">2013–2017</div></div><span class="course-level">DUT</span></div>
+<div class="course-item"><div><div class="course-name">Database Structuring SQL/Oracle</div><div class="course-detail">2011–2016</div></div><span class="course-level">DUT</span></div>
+<div class="course-item"><div><div class="course-name">Model Interpretability</div><div class="course-detail">BUT3 · Work-study</div></div><span class="course-level">BUT3</span></div></div></div>
   </div>
   <div style="margin-top:3.5rem">
     <h3 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:1.35rem;color:var(--navy);margin-bottom:1.5rem;">Academic Leadership</h3>
-    <div class="resp-list">
-      <div class="resp-item"><div class="resp-period">2021 →<br>present</div><div><div class="resp-title">Director of Studies — Master 1 MLSD</div><div class="resp-desc">Managing ~4,000 applications per year, scheduling 16 course units, coordinating 10 faculty members, overseeing work-study apprentices.</div></div></div>
-      <div class="resp-item"><div class="resp-period">2017–2021</div><div><div class="resp-title">Deputy Director of Studies — MIAGE (M1 & M2)</div><div class="resp-desc">~100 students/year across 4 groups, 30 instructors, 18 course units. Reviewed ~400 eCandidat and 200 international applications annually.</div></div></div>
-      <div class="resp-item"><div class="resp-period">2014–2017</div><div><div class="resp-title">Co-Director — Master 2 AMSD</div><div class="resp-desc">Machine Learning for Data Science. Candidate selection, jury organisation, defences coordination.</div></div></div>
-    </div>
+    <div class="resp-list"><div class="resp-item"><div class="resp-period">2021 →<br>present</div><div><div class="resp-title">Director of Studies — Master 1 MLSD</div><div class="resp-desc">Managing ~4,000 applications per year, scheduling 16 course units, coordinating 10 faculty members.</div></div></div>
+<div class="resp-item"><div class="resp-period">2017–2021</div><div><div class="resp-title">Deputy Director of Studies — MIAGE (M1 &amp; M2)</div><div class="resp-desc">~100 students/year, 30 instructors, 18 course units. Reviewed ~400 eCandidat and 200 international applications annually.</div></div></div>
+<div class="resp-item"><div class="resp-period">2014–2017</div><div><div class="resp-title">Co-Director — Master 2 AMSD</div><div class="resp-desc">Machine Learning for Data Science. Candidate selection, jury organisation, defences coordination.</div></div></div></div>
   </div>
 </section>
 
-<!-- PROJECTS -->
 <section id="projects">
   <div class="sec-head"><h2>Research Projects</h2><div class="sec-rule"></div></div>
-  <div class="projects-grid">
-    <div class="project-card"><div class="project-abbr">LCARS</div><div class="project-name">Leveraging Clustering to Advance Recommender Systems</div><div class="project-desc">IDEX project — Université Paris Cité & UM6P. High-dimensional personalised recommendation via clustering.</div></div>
-    <div class="project-card"><div class="project-abbr">GePhEx</div><div class="project-name">Genome – Phenome – Exposome</div><div class="project-desc">ANR Junior Chair project (2019–2021). Coordinator. Identification of phenome/exposome associated with genomic alterations in complex diseases.</div></div>
-    <div class="project-card"><div class="project-abbr">MIMS</div><div class="project-name">Multi-sources Integration & Methodological Survey</div><div class="project-desc">Integration of multi-omics data using multi-view clustering for exploratory and predictive analysis.</div></div>
-    <div class="project-card"><div class="project-abbr">ML-Online</div><div class="project-name">Semi-virtualisation of ML Programmes</div><div class="project-desc">IdEx Pedagogical Innovation grant (2021). Semi-virtual curriculum improving resilience and international reach.</div></div>
-    <div class="project-card"><div class="project-abbr">MOLDASTH</div><div class="project-name">Mould, Inflammation & Asthma</div><div class="project-desc">ANSES project (INSERM U1018). Multivariate analysis on the CONSTANCES cohort (~116,000 participants).</div></div>
-    <div class="project-card"><div class="project-abbr">Colibri</div><div class="project-name">Papyrus Tool — COVID-19</div><div class="project-desc">User-friendly exploration of the COVID-19 scientific literature, developed at Centre Borelli.</div></div>
-  </div>
+  <div class="projects-grid"><div class="project-card"><div class="project-header"><div class="project-abbr">LCARS</div><div class="project-date">2023 →</div></div><div class="project-name">Leveraging Clustering to Advance Recommender Systems</div><div class="project-desc">IDEX project — Université Paris Cité & UM6P. High-dimensional personalised recommendation via clustering.</div></div>
+<div class="project-card"><div class="project-header"><div class="project-abbr">GePhEx</div><div class="project-date">2019–2021</div></div><div class="project-name">Genome – Phenome – Exposome</div><div class="project-desc">ANR Junior Chair project. Coordinator. Identification of phenome/exposome associated with genomic alterations in complex diseases.</div></div>
+<div class="project-card"><div class="project-header"><div class="project-abbr">MIMS</div><div class="project-date">2020–2022</div></div><div class="project-name">Multi-sources Integration & Methodological Survey</div><div class="project-desc">Integration of multi-omics data using multi-view clustering for exploratory and predictive analysis.</div></div>
+<div class="project-card"><div class="project-header"><div class="project-abbr">ML-Online</div><div class="project-date">2021</div></div><div class="project-name">Semi-virtualisation of ML Programmes</div><div class="project-desc">IdEx Pedagogical Innovation grant. Semi-virtual curriculum improving resilience and international reach.</div></div>
+<div class="project-card"><div class="project-header"><div class="project-abbr">MOLDASTH</div><div class="project-date">2018–2021</div></div><div class="project-name">Mould, Inflammation & Asthma</div><div class="project-desc">ANSES project (INSERM U1018). Multivariate analysis on the CONSTANCES cohort (~116,000 participants).</div></div>
+<div class="project-card"><div class="project-header"><div class="project-abbr">Colibri</div><div class="project-date">2020–2021</div></div><div class="project-name">Papyrus Tool — COVID-19</div><div class="project-desc">User-friendly exploration of COVID-19 scientific literature, developed at Centre Borelli.</div></div></div>
 </section>
 
-<!-- WORKSHOPS -->
 <section id="workshops">
-  <div class="sec-head"><h2>Workshops & Scientific Organisation</h2><div class="sec-rule"></div></div>
-
-  <div class="ws-grid">
-    <div class="ws-card"><div class="ws-card-year">2025</div><div class="ws-card-body"><div class="ws-card-name">MuReC'25 — Multimodal Representation Learning and Clustering</div><div class="ws-card-role">Program Chair</div><div class="ws-card-venue">ACM MMASIA 2025</div></div></div>
-    <div class="ws-card"><div class="ws-card-year">2024</div><div class="ws-card-body"><div class="ws-card-name">DLC — Deep Learning for Clustering (4th ed.)</div><div class="ws-card-role">Program Chair</div><div class="ws-card-venue">IEEE ICDM 2024</div></div></div>
-    <div class="ws-card"><div class="ws-card-year">2024</div><div class="ws-card-body"><div class="ws-card-name">RLC — Representation Learning for Clustering</div><div class="ws-card-role">Program Chair</div><div class="ws-card-venue">WSDM 2024 & PRICAI 2024</div></div></div>
-    <div class="ws-card"><div class="ws-card-year">2023</div><div class="ws-card-body"><div class="ws-card-name">DLC — Deep Learning for Clustering (3rd ed.)</div><div class="ws-card-role">Program Chair</div><div class="ws-card-venue">IEEE ICDM 2023</div></div></div>
-    <div class="ws-card"><div class="ws-card-year">2022</div><div class="ws-card-body"><div class="ws-card-name">DLC — Deep Learning for Clustering (2nd ed.)</div><div class="ws-card-role">Program Chair</div><div class="ws-card-venue">IEEE ICDM 2022</div></div></div>
-    <div class="ws-card"><div class="ws-card-year">2021</div><div class="ws-card-body"><div class="ws-card-name">DLC — Deep Learning for Clustering (1st ed.)</div><div class="ws-card-role">Program Chair</div><div class="ws-card-venue">IEEE ICDM 2021</div></div></div>
-    <div class="ws-card"><div class="ws-card-year">2020</div><div class="ws-card-body"><div class="ws-card-name">LDRC — Learning Data Representation for Clustering</div><div class="ws-card-role">Program Chair</div><div class="ws-card-venue">IJCAI-PRICAI 2020</div></div></div>
-    <div class="ws-card"><div class="ws-card-year">2019</div><div class="ws-card-body"><div class="ws-card-name">LDRC — Learning Data Representation for Clustering</div><div class="ws-card-role">Program Chair</div><div class="ws-card-venue">PAKDD 2019</div></div></div>
-    <div class="ws-card"><div class="ws-card-year">2018</div><div class="ws-card-body"><div class="ws-card-name">DLC — Deep Learning for Clustering (launch)</div><div class="ws-card-role">Program Chair</div><div class="ws-card-venue">IEEE ICDM 2018</div></div></div>
-    <div class="ws-card"><div class="ws-card-year">2018</div><div class="ws-card-body"><div class="ws-card-name">SFC 2018 — 25th Francophone Classification Society Meeting</div><div class="ws-card-role">President of the Organising Committee</div><div class="ws-card-venue">Société Francophone de Classification</div></div></div>
-  </div>
-
+  <div class="sec-head"><h2>Workshops &amp; Scientific Organisation</h2><div class="sec-rule"></div></div>
+  <div class="ws-grid"><div class="ws-card"><div class="ws-card-year">2025</div><div class="ws-card-body"><div class="ws-card-name">MuReC'25 — Multimodal Representation Learning and Clustering</div><div class="ws-card-role">Program Chair</div><div class="ws-card-venue">ACM MMASIA 2025</div></div></div>
+<div class="ws-card"><div class="ws-card-year">2024</div><div class="ws-card-body"><div class="ws-card-name">DLC — Deep Learning for Clustering (4th ed.)</div><div class="ws-card-role">Program Chair</div><div class="ws-card-venue">IEEE ICDM 2024</div></div></div>
+<div class="ws-card"><div class="ws-card-year">2024</div><div class="ws-card-body"><div class="ws-card-name">RLC — Representation Learning for Clustering</div><div class="ws-card-role">Program Chair</div><div class="ws-card-venue">WSDM 2024 &amp; PRICAI 2024</div></div></div>
+<div class="ws-card"><div class="ws-card-year">2023</div><div class="ws-card-body"><div class="ws-card-name">DLC — Deep Learning for Clustering (3rd ed.)</div><div class="ws-card-role">Program Chair</div><div class="ws-card-venue">IEEE ICDM 2023</div></div></div>
+<div class="ws-card"><div class="ws-card-year">2022</div><div class="ws-card-body"><div class="ws-card-name">DLC — Deep Learning for Clustering (2nd ed.)</div><div class="ws-card-role">Program Chair</div><div class="ws-card-venue">IEEE ICDM 2022</div></div></div>
+<div class="ws-card"><div class="ws-card-year">2021</div><div class="ws-card-body"><div class="ws-card-name">DLC — Deep Learning for Clustering (1st ed.)</div><div class="ws-card-role">Program Chair</div><div class="ws-card-venue">IEEE ICDM 2021</div></div></div>
+<div class="ws-card"><div class="ws-card-year">2020</div><div class="ws-card-body"><div class="ws-card-name">LDRC — Learning Data Representation for Clustering</div><div class="ws-card-role">Program Chair</div><div class="ws-card-venue">IJCAI-PRICAI 2020</div></div></div>
+<div class="ws-card"><div class="ws-card-year">2019</div><div class="ws-card-body"><div class="ws-card-name">LDRC — Learning Data Representation for Clustering</div><div class="ws-card-role">Program Chair</div><div class="ws-card-venue">PAKDD 2019</div></div></div>
+<div class="ws-card"><div class="ws-card-year">2018</div><div class="ws-card-body"><div class="ws-card-name">DLC — Deep Learning for Clustering (launch)</div><div class="ws-card-role">Program Chair</div><div class="ws-card-venue">IEEE ICDM 2018</div></div></div>
+<div class="ws-card"><div class="ws-card-year">2018</div><div class="ws-card-body"><div class="ws-card-name">SFC 2018 — 25th Meeting of the SFC</div><div class="ws-card-role">President of the Organising Committee</div><div class="ws-card-venue">Société Francophone de Classification</div></div></div></div>
   <div class="ws-review-box">
     <div class="ws-review-label">Reviewing Activity</div>
     <p class="ws-review-text">Regular reviewer for <strong>Pattern Recognition</strong>, <strong>ADAC</strong>, <strong>Machine Learning</strong>, <strong>IEEE TKDE</strong>, <strong>IEEE TNNLS</strong>, <strong>Knowledge-Based Systems</strong>. Also reviews for AAAI, AISTATS, PAKDD, SFC, and IFCS. Member of the SFC Programme Committee (2022–2025).</p>
   </div>
 </section>
 
-<!-- CONTACT -->
 <section id="contact">
-  <div>
-    <div class="sec-head" style="margin-bottom:2.5rem"><h2>Contact</h2><div class="sec-rule"></div></div>
-    <div class="contact-list">
-      <div class="contact-item"><div><div class="c-label">Email</div><div class="c-val"><a href="mailto:lazhar.labiod@u-paris.fr">lazhar.labiod@u-paris.fr</a></div></div></div>
-      <div class="contact-item"><div><div class="c-label">Institution</div><div class="c-val">Université Paris Cité<br>IUT Paris Rives de Seine</div></div></div>
-      <div class="contact-item"><div><div class="c-label">Laboratory</div><div class="c-val">Centre Borelli UMR 9010 · AI-DSCy Team</div></div></div>
-      <div class="contact-item"><div><div class="c-label">Personal Website</div><div class="c-val"><a href="https://sites.google.com/view/lazhar-labiod/" target="_blank">sites.google.com/view/lazhar-labiod</a></div></div></div>
+  <div class="sec-head"><h2>Contact</h2><div class="sec-rule"></div></div>
+  <div class="contact-inner">
+    <div>
+      <div class="contact-group-title">Details</div>
+      <div class="contact-list">
+        <div><div class="c-label">Email</div><div class="c-val"><a href="mailto:lazhar.labiod@u-paris.fr">lazhar.labiod@u-paris.fr</a></div></div>
+        <div><div class="c-label">Institution</div><div class="c-val">Université Paris Cité<br>IUT Paris Rives de Seine</div></div>
+        <div><div class="c-label">Laboratory</div><div class="c-val">Centre Borelli UMR 9010<br>Team AI-DSCy</div></div>
+        <div><div class="c-label">Personal Website</div><div class="c-val"><a href="https://sites.google.com/view/lazhar-labiod/" target="_blank">sites.google.com/view/lazhar-labiod</a></div></div>
+      </div>
     </div>
-  </div>
-  <div>
-    <p style="font-family:'Inconsolata',monospace;font-size:.62rem;color:rgba(255,255,255,.35);letter-spacing:.12em;text-transform:uppercase;margin-bottom:1.25rem">Academic Profiles</p>
-    <div class="profile-links">
-      <a class="profile-link" href="https://scholar.google.com" target="_blank"><span style="width:28px;text-align:center">🎓</span><div><span class="plink-label">Google Scholar</span>Publications & citations</div></a>
-      <a class="profile-link" href="https://dblp.org" target="_blank"><span style="width:28px;text-align:center">📚</span><div><span class="plink-label">DBLP</span>Bibliographic database</div></a>
-      <a class="profile-link" href="https://orcid.org" target="_blank"><span style="width:28px;text-align:center">🔖</span><div><span class="plink-label">ORCID</span>Researcher identifier</div></a>
-      <a class="profile-link" href="https://openreview.net" target="_blank"><span style="width:28px;text-align:center">📝</span><div><span class="plink-label">OpenReview</span>Open peer review</div></a>
-      <a class="profile-link" href="https://sites.google.com/view/lazhar-labiod/" target="_blank"><span style="width:28px;text-align:center">🌐</span><div><span class="plink-label">Personal Site</span>Google Sites page</div></a>
+    <div>
+      <div class="contact-group-title">Academic Profiles</div>
+      <div class="profile-links">
+        <a class="profile-link" href="https://scholar.google.com" target="_blank"><span style="width:24px;text-align:center">🎓</span><div><span class="plink-label">Google Scholar</span>Publications &amp; citations</div></a>
+        <a class="profile-link" href="https://dblp.org" target="_blank"><span style="width:24px;text-align:center">📚</span><div><span class="plink-label">DBLP</span>Bibliographic database</div></a>
+        <a class="profile-link" href="https://orcid.org" target="_blank"><span style="width:24px;text-align:center">🔖</span><div><span class="plink-label">ORCID</span>Researcher identifier</div></a>
+      </div>
+    </div>
+    <div>
+      <div class="contact-group-title">Other links</div>
+      <div class="profile-links">
+        <a class="profile-link" href="https://openreview.net" target="_blank"><span style="width:24px;text-align:center">📝</span><div><span class="plink-label">OpenReview</span>Open peer review</div></a>
+        <a class="profile-link" href="https://sites.google.com/view/lazhar-labiod/" target="_blank"><span style="width:24px;text-align:center">🌐</span><div><span class="plink-label">Personal Site</span>Google Sites page</div></a>
+        <a class="profile-link" href="https://www.linkedin.com" target="_blank"><span style="width:24px;text-align:center">💼</span><div><span class="plink-label">LinkedIn</span>Professional profile</div></a>
+      </div>
     </div>
   </div>
 </section>
 
-<footer>© 2026 Lazhar Labiod · Université Paris Cité · Centre Borelli UMR 9010</footer>
+<footer>
+  <span>© 2026 Lazhar Labiod · Université Paris Cité · Centre Borelli UMR 9010</span>
+  <span class="footer-upd">Last updated: March 2026</span>
+</footer>
 
 <script>
   var toggle = document.getElementById('navToggle');
@@ -550,7 +405,6 @@
   navLinks.querySelectorAll('a').forEach(function(a) {
     a.addEventListener('click', function() { navLinks.classList.remove('open'); });
   });
-
   var filters = document.querySelectorAll('.pub-filter');
   var pubItems = document.querySelectorAll('.pub-item');
   filters.forEach(function(btn) {
@@ -563,16 +417,13 @@
       });
     });
   });
-
   var observer = new IntersectionObserver(function(entries) {
     entries.forEach(function(e) {
       if (e.isIntersecting) { e.target.style.opacity = '1'; e.target.style.transform = 'translateY(0)'; }
     });
   }, { threshold: 0.07 });
-
-  document.querySelectorAll('.area, .thesis-card, .project-card, .pub-item, .tl-item, .ws-card, .resp-item').forEach(function(el) {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(14px)';
+  document.querySelectorAll('.area,.thesis-card,.project-card,.pub-item,.tl-item,.ws-card,.resp-item').forEach(function(el) {
+    el.style.opacity = '0'; el.style.transform = 'translateY(14px)';
     el.style.transition = 'opacity .5s ease, transform .5s ease';
     observer.observe(el);
   });
